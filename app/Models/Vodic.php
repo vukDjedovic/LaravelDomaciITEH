@@ -11,6 +11,13 @@ class Vodic extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'imePrezime',
+        'email',
+        'brojTelefona',
+        'agencija_id',
+    ];
+
     public function agencija()
     {
         return $this->belongsTo(Agencija::class);

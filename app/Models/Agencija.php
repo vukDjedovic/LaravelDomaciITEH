@@ -10,6 +10,12 @@ class Agencija extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'naziv',
+        'brojTelefona',
+        'email',
+    ];
+
     public function vodici()
     {
         return $this->hasMany(Vodic::class);
