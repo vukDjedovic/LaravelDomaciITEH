@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgencijaController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VodicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('agencija', AgencijaController::class)->only('index', 'show', 'store', 'destroy');
-Route::resource('vodic', VodicController::class)->only('index', 'destroy');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('agencija', AgencijaController::class)->only('index', 'show', 'store', 'destroy');
+    Route::resource('vodic', VodicController::class)->only('index', 'destroy');
+    Route::post('logout', [AuthController::class, 'logout']);
 });
