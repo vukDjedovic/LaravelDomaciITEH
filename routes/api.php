@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('agencija', AgencijaController::class);
-Route::resource('vodic', VodicController::class);
+Route::resource('agencija', AgencijaController::class)->only('index', 'show', 'store', 'destroy');
+Route::resource('vodic', VodicController::class)->only('index', 'destroy');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

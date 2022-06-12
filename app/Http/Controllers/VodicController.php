@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VodicResource;
 use App\Models\Vodic;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class VodicController extends Controller
      */
     public function index()
     {
-        //
+        return VodicResource::collection(Vodic::all());
     }
 
     /**
@@ -80,6 +81,7 @@ class VodicController extends Controller
      */
     public function destroy(Vodic $vodic)
     {
-        //
+        $vodic->delete();
+        return response()->json('Vodič je obrisan');
     }
 }

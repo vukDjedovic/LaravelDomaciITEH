@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AgencijaResource;
 use App\Models\Agencija;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class AgencijaController extends Controller
 {
@@ -14,7 +17,7 @@ class AgencijaController extends Controller
      */
     public function index()
     {
-        //
+        return AgencijaResource::collection(Agencija::all());
     }
 
     /**
@@ -35,7 +38,23 @@ class AgencijaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'naziv' => 'required|string',
+            'brojTelefona' => 'required|string',
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['Greška', $validator->errors()]);
+        }
+
+        $agencija = Agencija::create([
+            'naziv' => $request->naziv,
+            'brojTelefona' => $request->brojTelefona,
+            'email' => $request->email,
+        ]);
+
+        return response()->json(['Agencija je kreirana', new AgencijaResource($agencija)]);
     }
 
     /**
@@ -46,7 +65,7 @@ class AgencijaController extends Controller
      */
     public function show(Agencija $agencija)
     {
-        //
+        return new AgencijaResource($agencija);
     }
 
     /**
@@ -80,6 +99,7 @@ class AgencijaController extends Controller
      */
     public function destroy(Agencija $agencija)
     {
-        //
+        $agencija->delete();
+        return response()->json('Agencija je obrisana');
     }
 }
